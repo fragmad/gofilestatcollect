@@ -5,10 +5,23 @@ import "os"
 import "io/ioutil"
 import "fmt"
 
+//import "gopkg.in/mgo.v2"
+
 var count = 0
 var file_count = 0
 var directory_count = 0
-var verbose = false
+var verbose = true
+var mongo = false
+
+type Entry struct {
+	FullPath    string  `bson:"FullPath"`
+	Name        string  `bson:"Name"`
+	Size        string  `bson:"Size"`
+	IsDirectory boolean `bson:"IsDirectory"`
+	IsDirectory boolean `bson:"IsFile"`
+}
+
+var mongo boolean
 
 func print_file_stats(path string, info os.FileInfo) {
 	fmt.Println("--")
@@ -29,6 +42,14 @@ func print_directory_stats(path string, info os.FileInfo) {
 	fmt.Println("A directory")
 }
 
+// Do the connection stuff for mongo
+
+// All disgustingly ineffiecent and hardcoded.
+
+func insert_into_mongod(path_item Entry) {
+
+}
+
 func walk_file_tree(dirPath string) {
 	filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
 		if !info.IsDir() {
@@ -41,6 +62,7 @@ func walk_file_tree(dirPath string) {
 		if info.IsDir() {
 			if verbose {
 				print_directory_stats(path, info)
+				sssssssss
 			}
 			count++
 			directory_count++
