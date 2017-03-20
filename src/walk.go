@@ -9,8 +9,11 @@ import "time"
 var count = 0
 var file_count = 0
 var directory_count = 0
-var verbose = false
+var verbose = true
 var start_time = time.Now()
+
+// Variable to store list of paths to ignore and not walk.
+// Ensure /proc is in this list.
 
 func print_file_stats(path string, info os.FileInfo) {
 	fmt.Println("--")
@@ -40,6 +43,7 @@ func print_final_stats() {
 
 func walk_file_tree(dirPath string) {
 	filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
+		// if path is in ignored paths don't continue
 		if !info.IsDir() {
 			if verbose {
 				print_file_stats(path, info)
