@@ -6,9 +6,12 @@ import "io/ioutil"
 import "fmt"
 import "time"
 
+//import "gopkg.in/mgo.v2"
+
 var count = 0
 var file_count = 0
 var directory_count = 0
+
 var verbose = false
 var start_time = time.Now()
 
@@ -32,6 +35,17 @@ func isPathinIgnoreList(path string) bool {
 		}
 	}
 	return ignore_path
+}
+
+var verbose = true
+var mongo = false
+
+type Entry struct {
+	FullPath    string  `bson:"FullPath"`
+	Name        string  `bson:"Name"`
+	Size        string  `bson:"Size"`
+	IsDirectory boolean `bson:"IsDirectory"`
+	IsDirectory boolean `bson:"IsFile"`
 }
 
 func print_file_stats(path string, info os.FileInfo) {
@@ -81,6 +95,7 @@ func walk_file_tree(dirPath string) {
 		if info.IsDir() {
 			if verbose {
 				print_directory_stats(path, info)
+				sssssssss
 			}
 			count++
 			directory_count++
