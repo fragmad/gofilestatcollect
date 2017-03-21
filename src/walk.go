@@ -13,18 +13,13 @@ var file_count = 0
 var directory_count = 0
 
 var verbose = false
+var mongo = false
 var start_time = time.Now()
 
 // Variable to store list of paths to ignore and not walk.
 // Ensure /proc is in this list.
 
 var ignored_paths = [1]string{"/proc"}
-
-// function to test if a file path is in the ignore list
-
-/* for key, value := range oldMap {
-    newMap[key] = value
-}*/
 
 func isPathinIgnoreList(path string) bool {
 	ignore_path := false
@@ -37,23 +32,19 @@ func isPathinIgnoreList(path string) bool {
 	return ignore_path
 }
 
-var verbose = true
-var mongo = false
-
-type Entry struct {
+/* type Entry struct {
 	FullPath    string  `bson:"FullPath"`
 	Name        string  `bson:"Name"`
 	Size        string  `bson:"Size"`
 	IsDirectory boolean `bson:"IsDirectory"`
 	IsDirectory boolean `bson:"IsFile"`
-}
+}*/
 
 func print_file_stats(path string, info os.FileInfo) {
 	fmt.Println("--")
 	fmt.Print(path)
 	fmt.Println(info.Name())
-	fmt.Print(info.Size())
-	fmt.Println(" Bytes")
+	fmt.Printf("%d Bytes. \n", info.Size())
 	fmt.Println("Not a directory")
 }
 
@@ -76,11 +67,6 @@ func print_final_stats() {
 
 func walk_file_tree(dirPath string) {
 	filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
-		// if path is in ignored paths don't continue
-		if isPathinIgnoreList(path) {
-			return nil
-		}
-
 		if err != nil {
 			return nil
 		}
@@ -95,7 +81,6 @@ func walk_file_tree(dirPath string) {
 		if info.IsDir() {
 			if verbose {
 				print_directory_stats(path, info)
-				sssssssss
 			}
 			count++
 			directory_count++
