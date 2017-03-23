@@ -25,7 +25,7 @@ func isPathinIgnoreList(path string) bool {
 	ignore_path := false
 	for _, test_path := range ignored_paths {
 		if path == test_path {
-			fmt.Println("ignoring", test_path)
+			// fmt.Println("ignoring", test_path)
 			ignore_path = true
 		}
 	}
@@ -65,7 +65,7 @@ func print_final_stats() {
 	fmt.Printf("Execution took: %s.\n", time.Since(start_time))
 }
 
-func walk_file_tree(dirPath string) {
+func walk_file_tree(dirPath string) int {
 	filepath.Walk(dirPath, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return nil
@@ -87,6 +87,8 @@ func walk_file_tree(dirPath string) {
 		}
 		return nil
 	})
+
+	return count
 }
 
 func main() {
